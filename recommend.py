@@ -48,7 +48,6 @@ def recommend(movie_title, top_k=5):
     row_positions = df.index.get_indexer(top_50.index)
     clusters = kmeans.fit_predict(X_tfidf[row_positions])
 
-
     top_50["cluster"] = clusters
 
     # picking best movie from each cluster
