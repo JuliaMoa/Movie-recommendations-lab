@@ -2,6 +2,7 @@ import pandas as pd
 import pickle 
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.cluster import KMeans
+from fuzzywuzzy import process
 
 df = pd.read_csv("movies_clean.csv", index_col="movieId")
 
@@ -17,10 +18,16 @@ X_tfidf = tfidf.transform(df["tags"])
 
 def recommend(movie_title, top_k=5):
 
-    #find the movie
-    if movie_title not in df["title"].values:
-        raise ValueError(f"The movie '{movie_title}' is not in the database.")
-    
+    # fuzzy match: hitta närmaste titel
+    all_titles = df["title"].values
+    best_match, score = process.extractOne(movie_title, all_titles)
+
+    if score < 60:
+        raise ValueError(f"Hittade ingen film som liknar '{movie_title}'.")
+
+    print(f"Matchade till: {best_match}")
+
+    movie_title = best_match
     movie_id = df[df["title"] == movie_title].index[0]
     movie_tags = df.loc[movie_id, "tags"]
 
@@ -56,7 +63,7 @@ def recommend(movie_title, top_k=5):
         .groupby("cluster").head(1).sort_values("score", ascending=False)
     )
 
-    return recommendations["title"]
+    return recommendations["title"].tolist()
 
 # run example
 if __name__ == "__main__":
@@ -64,6 +71,7 @@ if __name__ == "__main__":
     try:
         recs = recommend(film)
         print("\nRekommendationer:\n")
-        print(recs)
+        for film in recs:
+            print(f"- {film}")
     except ValueError as e:
         print(e)
