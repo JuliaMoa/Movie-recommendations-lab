@@ -80,7 +80,20 @@ The system gave these movies as output:
   <img src="image-12.png" width="150">
 </div>
 
- ed to the following out put movies: Green Mile, The (1999), Captain Phillips (2013), Saving Private Ryan (1998), Rain Man (1988), Last Days in Vietnam (2014)
+And for Persuasion  
+<img src="image-13.png" width="300">
+
+The system gave these recommendations:
+
+<div style="display: flex; gap: 10px;">
+  <img src="image-14.png" width="150">
+  <img src="image-15.png" width="150">
+  <img src="image-16.png" width="150">
+  <img src="image-17.png" width="150">
+  <img src="image-18.png" width="150">
+</div>
+
+
 
 ## DISCUSSION
 The model captures some relationship between tags and ratings, but its helpfulness in this context is limited as previously discussed. 
