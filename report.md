@@ -67,17 +67,19 @@ The cv-standard deviation was around 0.02, meaning that the model is robust. Per
 Even though there is a correlation between tags and rating, movie tags cannot completely explain/predict the variation in average rating for the movies. This was why the RMSE was somewhat high. We need to keep in mind that this model is used in combination with other methods in the full recommendation system. 
 The final and most important result is how well the whole system actually recommends movies based on the input movie - and it did quite well. 
 
-For example, the input movie Forrest Gump:
-![alt text](image-7.png)
+For example, the input movie Forrest Gump:  
+<img src="image-7.png" width="300">
 
 The system gave these movies as output:
 
-![alt text](image-8.png)
-![alt text](image-9.png)
-![alt text](image-10.png)
-![alt text](image-11.png)
-![alt text](image-12.png)
- 
+<div style="display: flex; gap: 10px;">
+  <img src="image-8.png" width="150">
+  <img src="image-9.png" width="150">
+  <img src="image-10.png" width="150">
+  <img src="image-11.png" width="150">
+  <img src="image-12.png" width="150">
+</div>
+
  ed to the following out put movies: Green Mile, The (1999), Captain Phillips (2013), Saving Private Ryan (1998), Rain Man (1988), Last Days in Vietnam (2014)
 
 ## DISCUSSION
