@@ -16,8 +16,8 @@ The tags contain words. This is difficult to work with and therefore we need to 
 
 TF-IDF is a weighting scheme used to represent text numerically. It increases the weight of words that are important in a specific document while down-weighting words that are common across the entire corpus. 
 
-![alt text](image-3.png)
-![alt text](image-4.png)
+![alt text](images/image-3.png)
+![alt text](images/image-4.png)
 where N is the number of documents and df(t) is the number of documents containing the term t. 
 
 TF-IDF weight: TF-IDF(t,d) = TF(t,d) * IDF(t)
@@ -27,7 +27,7 @@ TF-IDF transforms text into a high-dimensional vector space where each dimension
 #### COSINE SIMILARITY
 Cosine similarity measures how similar two documents are by comparing the angle between their TF-IDF vectors. It works well for sparse TF-IDF vectors because it focuses on relative word usage. 
 
-![alt text](image.png) 
+![alt text](images/image.png) 
 
 Value ranges from 0 to 1. 1 means identical direction (high similarity). 0 means orthogonal (no similarity).
 
@@ -37,10 +37,10 @@ TF-IDF already highlights meaningful words. Cosine similarity then checks wheter
 ### K-Means Clustering
 This is an unsupervised learning algorithm that partitions data into k clusters by minimizing the distance between points and their assigned cluster centers. When applied to the TF-IDF vectors in our system, k-means groups the movies based on similarity in word usage. 
 
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 where:
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
 Algorithm steps:
 1. Initialize 𝑘 centroids
@@ -54,7 +54,7 @@ This is useful in the project to be able to pick movies from different clusters,
 In addition to methods to ensure similarity as well as some diversity in the recommendations, we also require a method to determine quality of movies. A regression model was chosen to predict the mean rating from TF-IDF-vectorized tags. Several regression models were tested. GradientBoostingRegressor and ExtraTreesRegressor were both evaluated with randomized hyperparameter search (varying number of estimators, tree depth, learning rate and subsampling rate).
 
 AdaBoostRegressor was also tested and ultimately chosen as the value regressor on mean rating. It was much faster and therefore more practical than the other models. This is an ensemble method that combines many weak learners (decision trees of depth 1, so-called decision stumps) into a strong predictor by iteratively reweighting training examples. On each iteration m, a weak learner is trained, and the final prediction is a weighted sum of these learners: 
-![alt text](image-6.png)
+![alt text](images/image-6.png)
 Hyperparameters for AdaBoostRegressor (such as n_estimators and learning_rate) were tuned using RandomizedSearchCV with a 3-fold cross-validation on a subset of the training data. The best model was then retrained on the full training set and evaluated on a held-out test set using RMSE as the main metric.
 
 ## How the model is used in the recommendation system:
@@ -70,29 +70,29 @@ Even though there is a correlation between tags and rating, movie tags cannot co
 The final and most important result is how well the whole system actually recommends movies based on the input movie - and it did quite well. 
 
 For example, the input movie Forrest Gump:  
-<img src="image-7.png" width="300">
+<img src="images/image-7.png" width="300">
 
 The system gave these movies as output:
 
 <div style="display: flex; gap: 10px;">
-  <img src="image-8.png" width="150">
-  <img src="image-9.png" width="150">
-  <img src="image-10.png" width="150">
-  <img src="image-11.png" width="150">
-  <img src="image-12.png" width="150">
+  <img src="images/image-8.png" width="150">
+  <img src="images/image-9.png" width="150">
+  <img src="images/image-10.png" width="150">
+  <img src="images/image-11.png" width="150">
+  <img src="images/image-12.png" width="150">
 </div>
 
 And for Persuasion  
-<img src="image-13.png" width="300">
+<img src="images/image-13.png" width="300">
 
 The system gave these recommendations:
 
 <div style="display: flex; gap: 10px;">
-  <img src="image-14.png" width="150">
-  <img src="image-15.png" width="150">
-  <img src="image-16.png" width="150">
-  <img src="image-17.png" width="150">
-  <img src="image-18.png" width="150">
+  <img src="images/image-14.png" width="150">
+  <img src="images/image-15.png" width="150">
+  <img src="images/image-16.png" width="150">
+  <img src="images/image-17.png" width="150">
+  <img src="images/image-18.png" width="150">
 </div>
 
 
