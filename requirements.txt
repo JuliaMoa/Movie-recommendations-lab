@@ -16,3 +16,5 @@ kagglehub
 graphviz
 nltk
 pyarrow
+fuzzywuzzy
+python-Levenshtein
