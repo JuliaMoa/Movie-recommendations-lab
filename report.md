@@ -61,6 +61,8 @@ Hyperparameters for AdaBoostRegressor (such as n_estimators and learning_rate) w
 When a user inputs a movie, its tag text is transformed using the same TF-IDF vectorizer as during training. Cosine similarity is then computed between this vector and all other movie vectors to identify the most thematically similar movies. For each of these similar movies, the AdaBoost Model predicts an expected mean rating based on solely their tags. The recommendations are then ranked by a combination of similarity and predicted rating, ensuring that the system suggests movies that are both close in content and likely to be highly rated. These two signals - cosine similarity and predicted rating - are combined into a hybrid score. The top 50 movies according to this score are selected as candidates. To promote diversity, k-means clustering is then applied to the high-scoring candidates' TF-IDF vectors. 5 clusters are created, and one top-scoring movie from each is chosen for recommendation. 
 
 ## RESULTS
+Note: The rmse-results mentioned in this section can be found by running train_model.py.
+
 The model is value-regressor for the mean rating (ranging 0-5). RMSE measures how well the model predicts the rating. Using cross validation rmse on the training data, the model scored around 0.78. This means that on average the model missed by 0.78 rating units. 
 The cv-standard deviation was around 0.02, meaning that the model is robust. Performing rmse on the test-data the result yielded almost identical results, meaning the model performs as expected compared to the CV-RMSE. This indicates no overfitting.
 
@@ -94,12 +96,9 @@ The system gave these recommendations:
 </div>
 
 
-
 ## DISCUSSION
-The model captures some relationship between tags and ratings, but its helpfulness in this context is limited as previously discussed. 
+The AdaBoostRegressor-model captures some relationship between tags and ratings. The hybrid approach that the model is part of combines cosine-similarity, predicting rating, and k-means clustering. It did a pretty good job in recommending movies that were similar, of high quality and had some diveristy among themselves. 
 
-Still, the hybrid approach—combining cosine similarity, predicted rating, and k‑means clustering—produces coherent and diverse recommendations in practice.
-
-A key limitation is that the system is purely content‑based. Collaborative filtering could have captured user‑to‑user taste patterns that tags cannot represent, and would likely improve recommendation quality.
+A key limitation was that the system is purely content‑based. Collaborative filtering could have captured user‑to‑user taste patterns that tags cannot represent, and would likely improve recommendation quality.
 
 
