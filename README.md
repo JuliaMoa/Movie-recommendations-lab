@@ -16,11 +16,11 @@ Required files (not included in this repo):
 
 Place all CSV files in the project root before running the code.
 
-These are combined during preprocessing into:
-
-movies_clean.csv — containing movieId, title, tags, and mean rating.
+These are combined during preprocessing into: movies_clean.csv — containing movieId, title, tags, and mean rating.
 
 ### How to use the recommendation system:
+
+First run preprocessing.py to generate movies_clean.csv which is needed for the recommendation system.
 
 Run recommend.py, then enter a movie title in the terminal.
 
