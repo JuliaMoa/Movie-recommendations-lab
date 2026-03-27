@@ -32,8 +32,8 @@ X_train, X_test, y_train, y_test = train_test_split(X_tfidf, y, test_size=0.2, r
 X_cv = X_train[:3000]
 y_cv = y_train[:3000]
 
-# model = ExtraTreesRegressor() -- was too slow when training
-# model = AdaBoostRegressor() -- got slightly worse rmse
+# model = ExtraTreesRegressor() --> was too slow when training
+# model = GradientBoostingRegressor() --> was also too slow to run
 
 model = AdaBoostRegressor()
 

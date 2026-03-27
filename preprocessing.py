@@ -34,20 +34,5 @@ df = df.dropna(subset=["rating"])
 df.to_csv("movies_clean.csv", index=True) 
 
 
-# split and put away the testing data
-
-
-# preprocessing pipeline
-
-
-
-# in the model pipeline put preprocessing, the tf-idf-vectorizer
-
-# cross-validation and finetuning of hyperparametres
-
-# testing 
-
-# increase diversity with clustering 
-
 
 
