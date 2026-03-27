@@ -1,13 +1,9 @@
-explaining which methods you use, 
-what limitations apply,
-and what choices you have made. 
--- chose to use mean-rating
--- choose to include genres in tags
--- creating the data set this way -- to able to check correlation tags and ratings
-
 ## INTRODUCTION
+The purpose of this project was to create a movie recommendation system that takes one movie as input and gives 5 recommended movies. 
 
-The purpose of this project was to create a movie recommendation system that takes one movie as input and gives 5 recommended movies. A content based recommender approach was chosen using several different methods. The regression model used will be explained in another section.
+The data set created and used for the project contain rows for with movie-ID as index, and the columns are: title, tags (containing genres aswell as additional keywords), ratings.
+
+A content based recommender approach was chosen using several different methods. The regression model used will be explained in another section.
 
 #### TF-IDF
 TF-IDF is a weighting scheme used to represent text numerically. It increases the weight of words that are important in a specific document while down-weighting words that are common across the entire corpus. 
@@ -43,43 +39,33 @@ Algorithm steps:
 4. Repeat until convergence
 
 ## EXPLORATORY DATA ANALYSIS
-
 To explore wheter tags relate to movie ratings, the dataset was split into high-rated (rating > 4.0) and low-rated (rating < 3.0) films. A simple frequency analysis showed that high rated movies contained more quality- and mood-related words such as great, good, classic, Oscar, atmopheric and thought-provoking, while low-rated movies used more generic or negatively associated terms. Genres were common for both,comedy common in both, fantasy and sci-fi in the high-rated films and horror, crime and romance were common tags in the low rated movies.
 
 This difference suggested that tags carry meaningful information about perceived movie quality. The regression model later confirmed this: the most important features were the same value-laden and genre-related words identified in the frequency analysis. 
 
 ## MODEL
+Several regression models were tested to predict the mean rating from TF-IDF-vectorized tags. GradientBoostingRegressor and ExtraTreesRegressor were both evaluated with rndomized hyperparameter search (varying bumber of estimators, tree-depth, learning rate and subsampling rate).
 
-Tested and evaluated GradientBoostingRegression with hyperparameters...
-As well as ExtraTrees with hyperparameters...
-Both were too slow.
+AdaBoostRegressor was ultimately chosen as the value regressor. It is an ensemble method that combines many weak learners (decision trees of depth 1, so-called decision stumps) into a strong predictor by iterately reweighting training examples. On each iteration m, a weak learner is trained, and the final predction is a weighted sum of these learners: 
+![alt text](image-6.png)
+Hyperparameters for AdaBoostRegressor (such as n_estimators and learning_rate) were tuned using RandomizedSearchCV with a 3-fold cross-validation on a subset of the training data. The best model was then retrained on the full training set and evaluated on a held-out test set using RMSE as the main metric.
 
-AdaBoostRegressor was chosen as a value regressor to predict ratings.
-
---- beskriv/modell algoritmen och de
-
---- algoritmer/modell du använd samt vilka hyper-parametrar du använt. nämn alla modeller du använder, men beskriv i detalj bara den du faktiskt använder i slutändan (den som var bäst)
-
-How the model is used with the other methods?
+How the model is used in the recommendation system:
+When a user inputs a movie, its tag text is transformed using the same TF-IDF vectorizer as during training. Cosine similarity is then computed betwen this vector and all other movie vectors to identify the most thematically similar movies. For each of these similar movies, the AdaBoost Model precits an expected mean raing based on solely on their tags. The recommendations are then ranked by a combination of similarity and predicted rating, ensuring that the system suggests movies that are both close in content and likely to be higly rated. These two signals - cosine similarity and predicted rating - are combined into a hybrid score. The top 50 movies according to this score are selected as candidates. To promote diversity, k-means clustering is then applied to the high-scoring candidates' TF-IDF vectors. 5 clustes are created, and one top-scoring movie from each cluster is chosen for recommendation. 
 
 ## RESULTS
---- utvärdera modellen. du kan jämföra modeller tex i en tabell, men i löptexten beskriv bara den du använde i slutändan. Beskriv resultaten både i ord och i en figur eller python output. 
+The model is value-regressor of the mean rating (ranging 0-5). RMSE measures how well the model predicts the rating. Using cross validation rmse on the training data, the model scores around 0.78. This means in average the model missed with 0.78 rating units. 
+The cv-standard deviation was around 0.02, meaning that the model is robust. Performing rmse on the test-data the result yielded almost identical results, meaning the model performs as expected compared to the CV-RMSE. This indicates no overfitting.
 
-The AdaBoostRegressor was chosen for the project.  
-Hyperparameters:
-ested with RMSE and depending on the run, scored a
+These results are not fantastic. Even though there is a correlation between tags and rating, movie tags cannot completely explain/predict the variation in average rating for the movies. This is okay, keeping in mind that this model is used in combination with other methods in the full recommendation system.
 
-The model is value-regressor of meanrating (0-5). 
-RMSE measures how well the model predicts the rating. Using cross validation rmse on the training data, the model scores around 0.7. This means in average the model missed with 0.78 rating units. The cv-standard deviation was around 0.02, meaning that the model is robust. 
-
-Performing rmse on the test-data the result was very close. Meaning the model performs as expected compared to the CV-RMSE. Indicates no overfitting.
-
-Predicting rating is of course only one part of the full method.
-
-The resulting recommendations of the system were quite good. 
+The final result is how well the whole system actuallt recommends movies based on the input movie. 
+The resulting recommendations of the system were quite good in my subjective opinion.
+For example the input movie Forrest Gump led to the output: Green Mile, The (1999), Captain Phillips (2013), Saving Private Ryan (1998), Rain Man (1988), Last Days in Vietnam (2014)
 
 ## DISCUSSION
---- förklara kortakommanden och/eller begränsningar och resonera kring vad resultatet innebär för problemställningen
+The model captures some relationship between tags and ratings, but its accuracy is limited because tags only describe parts of a movie, and using mean rating as the target introduces noise.
 
-The somewhat high cv-rmse of the AdaBoostRegressor-model can be understand in the way that the movie tags cannot completely explain the variation in the movies' average grade. But together with the other methods and techniques in the full recommendation system, it does work quite well. 
+A key limitation is that the system is purely content‑based. Collaborative filtering could have captured user‑to‑user taste patterns that tags cannot represent, and would likely improve recommendation quality. Still, the hybrid approach—combining cosine similarity, predicted rating, and k‑means clustering—produces coherent and diverse recommendations in practice.
+
 
